@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="StudentExamGradingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TblAcademician">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AcademicianName" Type="nvarchar" MaxLength="50" />
+          <Property Name="AcademicianSurname" Type="nvarchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="AcademicianNumber" Type="char" MaxLength="11" />
+          <Property Name="AcademicianPassword" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TblDepartment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartmentName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TblGrade">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Exam1" Type="int" />
+          <Property Name="Exam2" Type="int" />
+          <Property Name="Exam3" Type="int" />
+          <Property Name="Quiz1" Type="int" />
+          <Property Name="Quiz2" Type="int" />
+          <Property Name="ProjectGrade" Type="int" />
+          <Property Name="Average" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Lesson" Type="int" />
+          <Property Name="Student" Type="int" />
+        </EntityType>
+        <EntityType Name="TblLesson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LessonName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TblStudent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StdName" Type="nvarchar" MaxLength="50" />
+          <Property Name="StdSurname" Type="nvarchar" MaxLength="50" />
+          <Property Name="StdNumber" Type="char" MaxLength="11" />
+          <Property Name="StdPassword" Type="nvarchar" MaxLength="20" />
+          <Property Name="StdMail" Type="nvarchar" MaxLength="50" />
+          <Property Name="StdPicture" Type="nvarchar" MaxLength="100" />
+          <Property Name="StdDepartment" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'StudentExamGradingSystem.dbo.View_1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_1">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="StdName" Type="nvarchar" MaxLength="50" />
+          <Property Name="StdSurname" Type="nvarchar" MaxLength="50" />
+          <Property Name="LessonName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Exam1" Type="int" />
+          <Property Name="Exam2" Type="int" />
+          <Property Name="Exam3" Type="int" />
+          <Property Name="Quiz1" Type="int" />
+          <Property Name="Quiz2" Type="int" />
+          <Property Name="ProjectGrade" Type="int" />
+          <Property Name="Average" Type="decimal" Precision="5" Scale="2" />
+        </EntityType>
+        <Association Name="FK_TblGrade_TblLesson">
+          <End Role="TblLesson" Type="Self.TblLesson" Multiplicity="0..1" />
+          <End Role="TblGrade" Type="Self.TblGrade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblLesson">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblGrade">
+              <PropertyRef Name="Lesson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblGrade_TblStudent">
+          <End Role="TblStudent" Type="Self.TblStudent" Multiplicity="0..1" />
+          <End Role="TblGrade" Type="Self.TblGrade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblStudent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblGrade">
+              <PropertyRef Name="Student" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblStudent_TblDepartment">
+          <End Role="TblDepartment" Type="Self.TblDepartment" Multiplicity="0..1" />
+          <End Role="TblStudent" Type="Self.TblStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblDepartment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblStudent">
+              <PropertyRef Name="StdDepartment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StudentExamGradingSystemModelStoreContainer">
+          <EntitySet Name="TblAcademician" EntityType="Self.TblAcademician" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblDepartment" EntityType="Self.TblDepartment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblGrade" EntityType="Self.TblGrade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblLesson" EntityType="Self.TblLesson" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblStudent" EntityType="Self.TblStudent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_1" EntityType="Self.View_1" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_1].[Id] AS [Id], 
+    [View_1].[StdName] AS [StdName], 
+    [View_1].[StdSurname] AS [StdSurname], 
+    [View_1].[LessonName] AS [LessonName], 
+    [View_1].[Exam1] AS [Exam1], 
+    [View_1].[Exam2] AS [Exam2], 
+    [View_1].[Exam3] AS [Exam3], 
+    [View_1].[Quiz1] AS [Quiz1], 
+    [View_1].[Quiz2] AS [Quiz2], 
+    [View_1].[ProjectGrade] AS [ProjectGrade], 
+    [View_1].[Average] AS [Average]
+    FROM [dbo].[View_1] AS [View_1]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_TblGrade_TblLesson" Association="Self.FK_TblGrade_TblLesson">
+            <End Role="TblLesson" EntitySet="TblLesson" />
+            <End Role="TblGrade" EntitySet="TblGrade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblGrade_TblStudent" Association="Self.FK_TblGrade_TblStudent">
+            <End Role="TblStudent" EntitySet="TblStudent" />
+            <End Role="TblGrade" EntitySet="TblGrade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblStudent_TblDepartment" Association="Self.FK_TblStudent_TblDepartment">
+            <End Role="TblDepartment" EntitySet="TblDepartment" />
+            <End Role="TblStudent" EntitySet="TblStudent" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StudentExamGradingSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TblAcademician">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AcademicianName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcademicianSurname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcademicianNumber" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Name="AcademicianPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TblDepartment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TblStudent" Relationship="Self.FK_TblStudent_TblDepartment" FromRole="TblDepartment" ToRole="TblStudent" />
+        </EntityType>
+        <EntityType Name="TblGrade">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Exam1" Type="Int32" />
+          <Property Name="Exam2" Type="Int32" />
+          <Property Name="Exam3" Type="Int32" />
+          <Property Name="Quiz1" Type="Int32" />
+          <Property Name="Quiz2" Type="Int32" />
+          <Property Name="ProjectGrade" Type="Int32" />
+          <Property Name="Lesson" Type="Int32" />
+          <Property Name="Student" Type="Int32" />
+          <NavigationProperty Name="TblLesson" Relationship="Self.FK_TblGrade_TblLesson" FromRole="TblGrade" ToRole="TblLesson" />
+          <NavigationProperty Name="TblStudent" Relationship="Self.FK_TblGrade_TblStudent" FromRole="TblGrade" ToRole="TblStudent" />
+          <Property Name="Average" Type="Decimal" Precision="5" Scale="2" />
+        </EntityType>
+        <EntityType Name="TblLesson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LessonName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TblGrade" Relationship="Self.FK_TblGrade_TblLesson" FromRole="TblLesson" ToRole="TblGrade" />
+        </EntityType>
+        <EntityType Name="TblStudent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StdSurname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StdNumber" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Name="StdPassword" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="StdMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StdPicture" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StdDepartment" Type="Int32" />
+          <NavigationProperty Name="TblDepartment" Relationship="Self.FK_TblStudent_TblDepartment" FromRole="TblStudent" ToRole="TblDepartment" />
+          <NavigationProperty Name="TblGrade" Relationship="Self.FK_TblGrade_TblStudent" FromRole="TblStudent" ToRole="TblGrade" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <Association Name="FK_TblStudent_TblDepartment">
+          <End Role="TblDepartment" Type="Self.TblDepartment" Multiplicity="0..1" />
+          <End Role="TblStudent" Type="Self.TblStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblDepartment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblStudent">
+              <PropertyRef Name="StdDepartment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblGrade_TblLesson">
+          <End Role="TblLesson" Type="Self.TblLesson" Multiplicity="0..1" />
+          <End Role="TblGrade" Type="Self.TblGrade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblLesson">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblGrade">
+              <PropertyRef Name="Lesson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblGrade_TblStudent">
+          <End Role="TblStudent" Type="Self.TblStudent" Multiplicity="0..1" />
+          <End Role="TblGrade" Type="Self.TblGrade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblStudent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblGrade">
+              <PropertyRef Name="Student" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StudentExamGradingSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TblAcademician" EntityType="Self.TblAcademician" />
+          <EntitySet Name="TblDepartment" EntityType="Self.TblDepartment" />
+          <EntitySet Name="TblGrade" EntityType="Self.TblGrade" />
+          <EntitySet Name="TblLesson" EntityType="Self.TblLesson" />
+          <EntitySet Name="TblStudent" EntityType="Self.TblStudent" />
+          <AssociationSet Name="FK_TblStudent_TblDepartment" Association="Self.FK_TblStudent_TblDepartment">
+            <End Role="TblDepartment" EntitySet="TblDepartment" />
+            <End Role="TblStudent" EntitySet="TblStudent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblGrade_TblLesson" Association="Self.FK_TblGrade_TblLesson">
+            <End Role="TblLesson" EntitySet="TblLesson" />
+            <End Role="TblGrade" EntitySet="TblGrade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblGrade_TblStudent" Association="Self.FK_TblGrade_TblStudent">
+            <End Role="TblStudent" EntitySet="TblStudent" />
+            <End Role="TblGrade" EntitySet="TblGrade" />
+          </AssociationSet>
+          <EntitySet Name="View_1" EntityType="StudentExamGradingSystemModel.View_1" />
+        </EntityContainer>
+        <EntityType Name="View_1">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="StdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StdSurname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LessonName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Exam1" Type="Byte" />
+          <Property Name="Exam2" Type="Byte" />
+          <Property Name="Exam3" Type="Byte" />
+          <Property Name="Quiz1" Type="Byte" />
+          <Property Name="Quiz2" Type="Byte" />
+          <Property Name="ProjectGrade" Type="Byte" />
+          <Property Name="Average" Type="Decimal" Precision="5" Scale="2" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StudentExamGradingSystemModelStoreContainer" CdmEntityContainer="StudentExamGradingSystemEntities">
+          <EntitySetMapping Name="TblAcademician">
+            <EntityTypeMapping TypeName="StudentExamGradingSystemModel.TblAcademician">
+              <MappingFragment StoreEntitySet="TblAcademician">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AcademicianName" ColumnName="AcademicianName" />
+                <ScalarProperty Name="AcademicianSurname" ColumnName="AcademicianSurname" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="AcademicianNumber" ColumnName="AcademicianNumber" />
+                <ScalarProperty Name="AcademicianPassword" ColumnName="AcademicianPassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblDepartment">
+            <EntityTypeMapping TypeName="StudentExamGradingSystemModel.TblDepartment">
+              <MappingFragment StoreEntitySet="TblDepartment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblGrade">
+            <EntityTypeMapping TypeName="StudentExamGradingSystemModel.TblGrade">
+              <MappingFragment StoreEntitySet="TblGrade">
+                <ScalarProperty Name="Average" ColumnName="Average" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Exam1" ColumnName="Exam1" />
+                <ScalarProperty Name="Exam2" ColumnName="Exam2" />
+                <ScalarProperty Name="Exam3" ColumnName="Exam3" />
+                <ScalarProperty Name="Quiz1" ColumnName="Quiz1" />
+                <ScalarProperty Name="Quiz2" ColumnName="Quiz2" />
+                <ScalarProperty Name="ProjectGrade" ColumnName="ProjectGrade" />
+                <ScalarProperty Name="Lesson" ColumnName="Lesson" />
+                <ScalarProperty Name="Student" ColumnName="Student" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblLesson">
+            <EntityTypeMapping TypeName="StudentExamGradingSystemModel.TblLesson">
+              <MappingFragment StoreEntitySet="TblLesson">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LessonName" ColumnName="LessonName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblStudent">
+            <EntityTypeMapping TypeName="StudentExamGradingSystemModel.TblStudent">
+              <MappingFragment StoreEntitySet="TblStudent">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StdName" ColumnName="StdName" />
+                <ScalarProperty Name="StdSurname" ColumnName="StdSurname" />
+                <ScalarProperty Name="StdNumber" ColumnName="StdNumber" />
+                <ScalarProperty Name="StdPassword" ColumnName="StdPassword" />
+                <ScalarProperty Name="StdMail" ColumnName="StdMail" />
+                <ScalarProperty Name="StdPicture" ColumnName="StdPicture" />
+                <ScalarProperty Name="StdDepartment" ColumnName="StdDepartment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_1">
+            <EntityTypeMapping TypeName="StudentExamGradingSystemModel.View_1">
+              <MappingFragment StoreEntitySet="View_1">
+                <ScalarProperty Name="Average" ColumnName="Average" />
+                <ScalarProperty Name="ProjectGrade" ColumnName="ProjectGrade" />
+                <ScalarProperty Name="Quiz2" ColumnName="Quiz2" />
+                <ScalarProperty Name="Quiz1" ColumnName="Quiz1" />
+                <ScalarProperty Name="Exam3" ColumnName="Exam3" />
+                <ScalarProperty Name="Exam2" ColumnName="Exam2" />
+                <ScalarProperty Name="Exam1" ColumnName="Exam1" />
+                <ScalarProperty Name="LessonName" ColumnName="LessonName" />
+                <ScalarProperty Name="StdSurname" ColumnName="StdSurname" />
+                <ScalarProperty Name="StdName" ColumnName="StdName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
